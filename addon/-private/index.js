@@ -1,3 +1,5 @@
+export { default as Radar } from './data-view/radar/radar';
+
 export { default as keyForItem } from './ember-internals/key-for-item';
 
 export { default as closestElement } from './utils/element/closest';
@@ -11,5 +13,6 @@ export { default as objectAt } from './data-view/utils/object-at';
 export {
   addScrollHandler,
   removeScrollHandler,
-  ScrollHandler
+  ScrollHandler,
 } from './data-view/utils/scroll-handler';
+

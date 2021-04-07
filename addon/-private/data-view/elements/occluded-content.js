@@ -25,10 +25,6 @@ export default class OccludedContent {
 
     this.isOccludedContent = true;
     this.rendered = false;
-
-    if (DEBUG) {
-      Object.preventExtensions(this);
-    }
   }
 
   getBoundingClientRect() {

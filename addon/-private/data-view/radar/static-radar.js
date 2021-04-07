@@ -88,6 +88,10 @@ export default class StaticRadar extends Radar {
     return Math.min(Math.ceil(this.visibleBottom / this._calculatedEstimateHeight), this.totalItems) - 1;
   }
 
+  append(numAppended) {
+    this._lastReached = false;
+  }
+
   /*
    * Public API to query for the offset of an item
    */

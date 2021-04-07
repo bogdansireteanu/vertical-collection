@@ -7,7 +7,17 @@ module.exports = function(defaults) {
   defaults.snippetSearchPaths = ['tests/dummy/app'];
   defaults.snippetPaths = ['tests/dummy/snippets'];
 
-  let app = new EmberAddon(defaults);
+  let app = new EmberAddon(defaults, {
+    autoImport: {
+      webpack: {
+        node: {
+          global: true,
+        },
+      },
+    },
+
+    snippetSearchPaths: ['tests/dummy/app'],
+  });
 
   app.isDevelopingAddon = () => {
     return true;
