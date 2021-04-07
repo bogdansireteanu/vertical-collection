@@ -1,6 +1,7 @@
 import { assert } from '@ember/debug';
 import Visualization from './visualization';
 import { ViewportContainer } from '../../-private';
+import { hasStyleValue, hasStyleWithNonZeroValue, styleIsOneOf } from '../utils/validate-style';
 
 export function debug<T extends { new (...args: any[]): {} }>(constructor: T) {
     
