@@ -36,6 +36,9 @@
     "doc": "doc",
     "test": "tests"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@bogdansireteanu"
+  },
   "repository": "https://github.com/html-next/vertical-collection.git",
   "homepage": "https://github.com/html-next/vertical-collection",
   "bugs": "https://github.com/html-next/vertical-collection/issues",
