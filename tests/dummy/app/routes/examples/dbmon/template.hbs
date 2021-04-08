@@ -7,17 +7,17 @@
         <div class="table-wrapper">
           <table class="table table-striped latest-data">
             <tbody>
-              {{#vertical-collection
-                items=model.databases
-                containerSelector=".table-wrapper"
-                key="id"
+              <VerticalCollection 
+                @items={{this.model.databases}}
+                @containerSelector=".table-wrapper"
+                @key="id"
 
-                estimateHeight=37
-                staticHeight=true
+                @estimateHeight={{37}}
+                @staticHeight={{true}}
                 bufferSize=5 as |db|
-              }}
+              >
                 {{examples/dbmon/components/dbmon-row tagName="tr" db=db}}
-              {{/vertical-collection}}
+              </VerticalCollection>
             </tbody>
           </table>
         </div>
