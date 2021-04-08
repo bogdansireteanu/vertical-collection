@@ -23,12 +23,15 @@ interface IVerticalCollectionArgs {
   idForFirstItem?: string;
   renderFromLast?: boolean;
   renderAll?: boolean;
+  shouldRecycle?: boolean;
   lastReached: (item: unknown, index: number) => void;
   firstReached: (item: unknown, index: number) => void;
   lastVisibleChanged: (item: unknown, index: number) => void;
   firstVisibleChanged: (item: unknown, index: number) => void;
+  scrollToItemFinished?: ((index: number, scrollTop: number) => void)
   [key: string]: unknown;
-  initialRenderCount?: number
+  initialRenderCount?: number;
+  firstItemIndex?: number ;
 }
 
 @debug
@@ -103,7 +106,9 @@ export default class VerticalCollection extends Component<IVerticalCollectionArg
    * @property shouldRecycle
    * @type Boolean
    */
-  @tracked shouldRecycle = true;
+  get shouldRecycle() {
+    return this.args.shouldRecycle ?? true;
+  }
 
   /*
    * A selector string that will select the element from
@@ -208,6 +213,32 @@ export default class VerticalCollection extends Component<IVerticalCollectionArg
 
     _radar.scheduleUpdate(true);
     return _radar.virtualComponents;
+  }
+
+  /**
+   * Public API Methods
+   * The promise will resolve with the offset height of the indexed item.
+   * @property index
+   * @type number
+   * @returns Promise<number>
+   */
+  @action scrollToItem(target: HTMLElement, index?: number): void {
+    if (index === undefined) {
+      return;
+    }
+    const { _radar } = this;
+    // Getting the offset height from Radar
+    let scrollTop = _radar.getOffsetForIndex(index);
+    _radar._scrollContainer.scrollTop = scrollTop;
+    // To scroll exactly to specified index, we are changing the prevIndex values to specified index
+    _radar._prevFirstVisibleIndex = _radar._prevFirstItemIndex = index;
+    // Components will be rendered after schedule 'measure' inside 'update' method.
+    // In our case, we need to focus the element after component is rendered. So passing the promise.
+    _radar.scheduleUpdate(false, () => {
+      if (this.args.scrollToItemFinished) {
+        this.args.scrollToItemFinished(index, scrollTop);
+      }
+    });
   }
 
   schedule(queueName: string, job: unknown) {
@@ -328,7 +359,12 @@ export default class VerticalCollection extends Component<IVerticalCollectionArg
   }
 }
 
-function calculateStartingIndex(items: Array<unknown>, idForFirstItem: string | null, key: string, renderFromLast: boolean) {
+function calculateStartingIndex(
+  items: Array<unknown>,
+  idForFirstItem: string | null,
+  key: string,
+  renderFromLast: boolean
+) {
   const totalItems = items.length;
 
   let startingIndex = 0;

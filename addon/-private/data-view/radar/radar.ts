@@ -285,7 +285,7 @@ abstract class Radar {
    *
    * @private
    */
-  @action scheduleUpdate(didUpdateItems?: boolean) {
+  @action scheduleUpdate(didUpdateItems?: boolean, afterUpdateCallback?: () => void) {
     if (didUpdateItems === true) {
       // Set the update items flag first, in case scheduleUpdate has already been called
       // but the RAF hasn't yet run
@@ -300,11 +300,11 @@ abstract class Radar {
       this._nextUpdate = null;
       this._scrollTop = this._scrollContainer.scrollTop;
 
-      this.update();
+      this.update(afterUpdateCallback);
     });
   }
 
-  update() {
+  update(afterUpdateCallback?: () => void) {
     if (this._didUpdateItems === true) {
       this._determineUpdateType();
       this._didUpdateItems = false;
@@ -314,7 +314,12 @@ abstract class Radar {
     this._updateIndexes();
     this._updateVirtualComponents();
 
-    this.schedule('measure', this.afterUpdate.bind(this));
+    this.schedule('measure', () => {
+      this.afterUpdate();
+      if(afterUpdateCallback) {
+        afterUpdateCallback();
+      }
+    });
   }
 
   abstract _updateIndexes(): void;
@@ -322,7 +327,7 @@ abstract class Radar {
   abstract append(numAppended: number): void
   abstract _didEarthquake(scrollDiff: number): boolean;
 
-  afterUpdate() {
+  @action afterUpdate() {
     const { _prevTotalItems: totalItems } = this;
 
     const scrollDiff = this._calculateScrollDiff();

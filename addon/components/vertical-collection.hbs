@@ -1,4 +1,6 @@
-<div {{did-insert this.didInsertMainContainer}} {{will-destroy this.willDestroyMainContainer}}>
+<div style="display: none;" {{did-insert this.didInsertMainContainer}} 
+    {{will-destroy this.willDestroyMainContainer}}
+    {{did-update this.idForFirstItem this.scrollToItem}}>
 </div>
 {{#each this.virtualComponents key="id" as |virtualComponent| }}
   {{unbound virtualComponent.upperBound}}

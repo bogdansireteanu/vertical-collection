@@ -27,11 +27,11 @@ export default class VirtualComponent {
   }
 
   get realUpperBound() {
-    return this.upperBound;
+    return this.upperBound.previousSibling;
   }
 
   get realLowerBound() {
-    return this.lowerBound;
+    return this.lowerBound.nextSibling;
   }
 
   getBoundingClientRect() {

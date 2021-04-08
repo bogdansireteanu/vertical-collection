@@ -25,6 +25,10 @@ export default class OccludedContent {
 
     this.isOccludedContent = true;
     this.rendered = false;
+
+    if (DEBUG) {
+      Object.preventExtensions(this);
+    }
   }
 
   getBoundingClientRect() {
@@ -46,11 +50,11 @@ export default class OccludedContent {
   }
 
   get realUpperBound() {
-    return this.upperBound;
+    return this.upperBound.previousSibling;
   }
 
   get realLowerBound() {
-    return this.lowerBound;
+    return this.lowerBound.nextSibling;
   }
 
   get parentNode() {
