@@ -22,7 +22,6 @@ import getScaledClientRect from '../../utils/element/get-scaled-client-rect';
 import keyForItem from '../../ember-internals/key-for-item';
 
 import document from '../../utils/document-shim';
-import { IVirtualComponent } from '../elements/types';
 import { tracked } from '@glimmer/tracking';
 import Ember from 'ember';
 
@@ -595,7 +594,7 @@ abstract class Radar {
           // If the underlying array has changed, the indexes could be the same but
           // the content may have changed, so recycle the remaining components
           const component = orderedComponents[i];
-          let item = objectAt(items, component.index) as IVirtualComponent;
+          let item = objectAt(items, component.index) as VirtualComponent;
           component.recycle(item, component.index);
         }
       } else {
